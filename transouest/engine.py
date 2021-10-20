@@ -51,6 +51,13 @@ def get_stops_by_line(line_id: str, stops: pd.DataFrame) -> pd.DataFrame:
     return stops[stops.line_id == line_id]
 
 
+def get_lines_by_stop(stop_id: int, stops_df: pd.DataFrame):
+    stops = stops_df.loc[stops_df.stop_id == stop_id]
+    stop_label = stops.head(1).stop_label.values[0]
+    lines = stops.line_id.values.tolist()
+    return stop_label, lines
+
+
 def stats_stops(stops: pd.DataFrame):
     stops_min = stops.loc[stops.passenger_count == stops.passenger_count.min()]
     stops_max = stops.loc[stops.passenger_count == stops.passenger_count.max()]
