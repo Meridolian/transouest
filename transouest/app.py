@@ -1,12 +1,27 @@
-from engine import format_lines, format_stops, parse_lines_file, parse_stops_file, get_stops_by_line, stats_stops, \
-    get_lines_by_stop
+from transouest.engine import (
+    format_lines,
+    format_stops,
+    parse_lines_file,
+    parse_stops_file,
+    get_stops_by_line,
+    stats_stops,
+    get_lines_by_stop,
+)
+from tkinter import *
+from tkinter import ttk
+
 
 lines_file = "data_files/listeLignes.xlsx"
 stops_file = "data_files/nomArret.csv"
 
 
 def window():
-    pass
+    root = Tk()
+    frm = ttk.Frame(root, padding=10)
+    frm.grid()
+    ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
+    ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
+    root.mainloop()
 
 
 def stops_by_line(line_input: str):
@@ -28,12 +43,13 @@ def lines_by_stop(stop_input: int):
 
 
 if __name__ == "__main__":
-    line = input("Choisissez un numéro de ligne : ")
-    stops, stops_min, stops_max = stops_by_line(line)
-    print(f"Arrêts de la ligne {line} : {stops}")
-    print(f"Minimum : {stops_min}")
-    print(f"Maximum : {stops_max}")
-    print("\n")
-    stop_id = int(input("Choisissez un arrêt : "))
-    stop, lines = lines_by_stop(stop_id)
-    print(f"Lignes passant par l'arrêt {stop_id} - {stop} : {lines}")
+    window()
+    # line = input("Choisissez un numéro de ligne : ")
+    # stops, stops_min, stops_max = stops_by_line(line)
+    # print(f"Arrêts de la ligne {line} : {stops}")
+    # print(f"Minimum : {stops_min}")
+    # print(f"Maximum : {stops_max}")
+    # print("\n")
+    # stop_id = int(input("Choisissez un arrêt : "))
+    # stop, lines = lines_by_stop(stop_id)
+    # print(f"Lignes passant par l'arrêt {stop_id} - {stop} : {lines}")

@@ -5,23 +5,35 @@ from typing import Dict, List
 def parse_lines_file(path: str) -> pd.DataFrame:
     df = pd.read_excel(path)
     df = df.drop(columns=["Identifiant", "Famille commerciale"])
-    df = df.rename(columns={
-        "Nom court": "line_id",
-        "Nom long": "line_label",
-    })
+    df = df.rename(
+        columns={
+            "Nom court": "line_id",
+            "Nom long": "line_label",
+        }
+    )
     return df
 
 
 def parse_stops_file(path: str) -> pd.DataFrame:
     df = pd.read_csv(path, sep=";")
-    df = df.drop(columns=["Parcours (libellé court)", "Ligne (ID)", "Ordre", "Montée autorisée", "Descente autorisée"])
-    df = df.rename(columns={
-        "Parcours (ID)": "route_id",
-        "Ligne (nom court)": "line_id",
-        "Point d'arrêt (ID)": "stop_id",
-        "Point d'arrêt (nom)": "stop_label",
-        "Unnamed: 9": "passenger_count"
-    })
+    df = df.drop(
+        columns=[
+            "Parcours (libellé court)",
+            "Ligne (ID)",
+            "Ordre",
+            "Montée autorisée",
+            "Descente autorisée",
+        ]
+    )
+    df = df.rename(
+        columns={
+            "Parcours (ID)": "route_id",
+            "Ligne (nom court)": "line_id",
+            "Point d'arrêt (ID)": "stop_id",
+            "Point d'arrêt (nom)": "stop_label",
+            "Unnamed: 9": "passenger_count",
+        }
+    )
     return df
 
 
@@ -30,24 +42,28 @@ def format_lines(lines) -> List[Dict]:
     for line in lines:
         print(line)
         stops = line[1].split("<>")
-        results.append({
-            "line_id": line[0],
-            "first_stop_label": stops[0].strip(),
-            "last_stop_label": stops[-1].strip()
-        })
+        results.append(
+            {
+                "line_id": line[0],
+                "first_stop_label": stops[0].strip(),
+                "last_stop_label": stops[-1].strip(),
+            }
+        )
     return results
 
 
 def format_stops(stops) -> List[Dict]:
     results = []
     for stop in stops:
-        results.append({
-            "route_id": stop[0],
-            "line_id": stop[1],
-            "stop_id": stop[2],
-            "stop_label": stop[3],
-            "passenger_count": stop[4]
-        })
+        results.append(
+            {
+                "route_id": stop[0],
+                "line_id": stop[1],
+                "stop_id": stop[2],
+                "stop_label": stop[3],
+                "passenger_count": stop[4],
+            }
+        )
     return results
 
 
