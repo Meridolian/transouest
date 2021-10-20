@@ -21,7 +21,9 @@ def stops_by_line(line_input: str):
 
 def lines_by_stop(stop_input: int):
     stops_df = parse_stops_file(stops_file)
-    stop_label, lines_list = get_lines_by_stop(stop_input, stops_df)
+    lines_df = parse_lines_file(lines_file)
+    stop_label, lines_by_stop_df = get_lines_by_stop(stop_input, stops_df, lines_df)
+    lines_list = format_lines(lines_by_stop_df.values.tolist())
     return stop_label, lines_list
 
 
@@ -32,6 +34,6 @@ if __name__ == "__main__":
     print(f"Minimum : {stops_min}")
     print(f"Maximum : {stops_max}")
     print("\n")
-    stop = int(input("Choisissez un arrêt : "))
-    stop_label, lines = lines_by_stop(stop)
-    print(f"Lignes passant par l'arrêt {stop} - {stop_label} : {lines}")
+    stop_id = int(input("Choisissez un arrêt : "))
+    stop, lines = lines_by_stop(stop_id)
+    print(f"Lignes passant par l'arrêt {stop_id} - {stop} : {lines}")

@@ -5,8 +5,11 @@ from typing import Dict, List
 def parse_lines_file(path: str) -> pd.DataFrame:
     df = pd.read_excel(path)
     df = df.drop(columns=["Identifiant", "Famille commerciale"])
-    lines = df.values.tolist()
-    return lines
+    df = df.rename(columns={
+        "Nom court": "line_id",
+        "Nom long": "line_label",
+    })
+    return df
 
 
 def parse_stops_file(path: str) -> pd.DataFrame:
@@ -25,6 +28,7 @@ def parse_stops_file(path: str) -> pd.DataFrame:
 def format_lines(lines) -> List[Dict]:
     results = []
     for line in lines:
+        print(line)
         stops = line[1].split("<>")
         results.append({
             "line_id": line[0],
@@ -51,11 +55,12 @@ def get_stops_by_line(line_id: str, stops: pd.DataFrame) -> pd.DataFrame:
     return stops[stops.line_id == line_id]
 
 
-def get_lines_by_stop(stop_id: int, stops_df: pd.DataFrame):
+def get_lines_by_stop(stop_id: int, stops_df: pd.DataFrame, lines_df: pd.DataFrame):
     stops = stops_df.loc[stops_df.stop_id == stop_id]
     stop_label = stops.head(1).stop_label.values[0]
     lines = stops.line_id.values.tolist()
-    return stop_label, lines
+    lines_by_stop_df = lines_df.loc[lines_df.line_id.isin(lines)]
+    return stop_label, lines_by_stop_df
 
 
 def stats_stops(stops: pd.DataFrame):
