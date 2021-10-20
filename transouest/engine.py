@@ -47,8 +47,11 @@ def format_stops(stops) -> List[Dict]:
     return results
 
 
-def stats_stops(line_id: str, stops: pd.DataFrame):
-    df = stops[stops.line_id == line_id]
-    stops_min = df.loc[df.passenger_count == df.passenger_count.min()]
-    stops_max = df.loc[df.passenger_count == df.passenger_count.max()]
+def get_stops_by_line(line_id: str, stops: pd.DataFrame) -> pd.DataFrame:
+    return stops[stops.line_id == line_id]
+
+
+def stats_stops(stops: pd.DataFrame):
+    stops_min = stops.loc[stops.passenger_count == stops.passenger_count.min()]
+    stops_max = stops.loc[stops.passenger_count == stops.passenger_count.max()]
     return stops_min, stops_max
